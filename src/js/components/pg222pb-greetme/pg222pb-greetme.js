@@ -1,3 +1,5 @@
+// import fetch from 'node-fetch'
+
 const template = document.createElement('template')
 template.innerHTML = `
 <div class="greetme">
@@ -125,7 +127,7 @@ customElements.define('pg222pb-greetme',
      * Adds event listener when the element is instered into the DOM.
      */
     connectedCallback () {
-      this.shadowRoot.querySelector('form').addEventListener('submit', this.handleFormSubmit.bind(this))
+      this.shadowRoot.querySelector('form').addEventListener('submit', this.#handleFormSubmit.bind(this))
     }
 
     /**
@@ -133,14 +135,29 @@ customElements.define('pg222pb-greetme',
      *
      * @param {Event} event - The event that triggered the listener.
      */
-    handleFormSubmit (event) {
+    async #handleFormSubmit (event) {
       event.preventDefault()
 
+      // Fetch character data and add image src
+      const FETCH_URL = 'https://api.jikan.moe/v4/random/characters'
+      const characterData = await this.#fetchJSON(FETCH_URL)
+      // Grab input and display name for greeting
       const name = this.shadowRoot.querySelector('input').value
-
-      this.shadowRoot.querySelector('.enteredname').append(name)
+      this.shadowRoot.querySelector('.enteredname').replaceChildren(name)
 
       this.shadowRoot.querySelector('.greetingwrapper').setAttribute('hidden', 'false')
+    }
+
+    /**
+     * Fetches data and parses JSON response.
+     *
+     * @param {string} URL - The URL to fetch the data from.
+     * @returns {object} - Returns the parsed JSON as a Javascript Object.
+     */
+    async #fetchJSON (URL) {
+      const response = await fetch(URL)
+      const data = await response.json()
+      return data
     }
   }
 )
