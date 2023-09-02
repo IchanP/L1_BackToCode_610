@@ -88,13 +88,16 @@ template.innerHTML = `
         .greetme input:focus {
             outline: none;
         }
-        
+        .error {
+            color: red;
+        }
     </style>
     <form autocomplete="off"> 
         <label for="name">What's your name?</label>
         <input type="text" id="name" name="name" placeholder="Please enter your name" required>
         <button type="submit">Please greet me!</button>
     </form>
+    <p class="error"></p>
     <div class="greetingwrapper" hidden="true">
      <div class="speech-wrapper">
          <div class="speech-bubble">
@@ -138,26 +141,36 @@ customElements.define('pg222pb-greetme',
     async #handleFormSubmit (event) {
       event.preventDefault()
 
-      // Fetch character data and add image src
-      const FETCH_URL = 'https://api.jikan.moe/v4/random/characters'
-      const characterData = await this.#fetchJSON(FETCH_URL)
       // Grab input and display name for greeting
       const name = this.shadowRoot.querySelector('input').value
       this.shadowRoot.querySelector('.enteredname').replaceChildren(name)
 
-      this.shadowRoot.querySelector('.greetingwrapper').setAttribute('hidden', 'false')
+      // Fetch character data and add image src
+      const characterData = await this.#fetchRandomCharacter()
+      if (characterData) {
+        this.shadowRoot.querySelector('.greetingwrapper').setAttribute('hidden', 'false')
+      }
     }
 
     /**
      * Fetches data and parses JSON response.
      *
-     * @param {string} URL - The URL to fetch the data from.
      * @returns {object} - Returns the parsed JSON as a Javascript Object.
      */
-    async #fetchJSON (URL) {
-      const response = await fetch(URL)
-      const data = await response.json()
-      return data
+    async #fetchRandomCharacter () {
+      try {
+        const FETCH_URL = 'https://api.jikan.moe/v4/random/characterss'
+        const response = await fetch(FETCH_URL)
+        console.log(response.ok)
+        if (response.ok) {
+          const characterData = await response.json()
+          return characterData
+        } else {
+          throw new Error()
+        }
+      } catch (error) {
+        this.shadowRoot.querySelector('.error').textContent = 'Something went wrong fetching...'
+      }
     }
   }
 )
