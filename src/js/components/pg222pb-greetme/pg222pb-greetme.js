@@ -148,7 +148,8 @@ customElements.define('pg222pb-greetme',
         this.shadowRoot.querySelector('.greetingwrapper').setAttribute('hidden', 'false')
         const name = this.shadowRoot.querySelector('input').value
         this.shadowRoot.querySelector('.enteredname').replaceChildren(name)
-        this.shadowRoot.querySelector('.characterimage').setAttribute('src', characterData.data.images.jpg.image_url)
+        const imageUrl = characterData.data.images.jpg.image_url
+        this.shadowRoot.querySelector('.characterimage').setAttribute('src', imageUrl)
 
         // Reset error message
         this.shadowRoot.querySelector('.error').textContent = ''
@@ -163,9 +164,16 @@ customElements.define('pg222pb-greetme',
     async #fetchRandomCharacter () {
       try {
         const FETCH_URL = 'https://api.jikan.moe/v4/random/characters'
+        const MAL_PLACEHOLDER_IMG = 'https://cdn.myanimelist.net/img/sp/icon/apple-touch-icon-256.png'
+
         const response = await fetch(FETCH_URL)
         if (response.ok) {
           const characterData = await response.json()
+          const imageUrl = characterData.data.images.jpg.image_url
+          // If the returned image is a placeholder recursively call itself and return value
+          if (imageUrl === MAL_PLACEHOLDER_IMG) {
+            return this.#fetchRandomCharacter()
+          }
           return characterData
         } else {
           throw new Error()
