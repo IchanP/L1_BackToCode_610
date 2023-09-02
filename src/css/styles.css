@@ -27,4 +27,8 @@ header {
     border-radius: 0.5%;
     border: 1px solid rgba(0, 0, 0, 0.101);
     box-shadow: 4px 4px 4px rgba(0, 0, 0, 0.2);
+    padding: 3rem 0;
+}
+pg222pb-greetme {
+    display: block;
 }
