@@ -13,6 +13,9 @@ template.innerHTML = `
             max-height: 300px;
             color: black;
         }
+        .greetingwrapper[hidden="true"] {
+            display: none;
+        }
         .characterimage {
             margin-top: 4%;
             object-fit: none;
@@ -55,9 +58,6 @@ template.innerHTML = `
             position: absolute;
             right: 2px;
         }
-        .hidden {
-            display: none;
-        }
         .greetme form {
             display: flex;
             justify-content: center;
@@ -93,7 +93,7 @@ template.innerHTML = `
         <input type="text" id="name" name="name" placeholder="Please enter your name" required>
         <button type="submit">Please greet me!</button>
     </form>
-    <div class="greetingwrapper">
+    <div class="greetingwrapper" hidden="true">
      <div class="speech-wrapper">
          <div class="speech-bubble">
             <p class="greeting-text">Greetings <span class="enteredname"></span> nice to meet you!</p>
@@ -129,25 +129,6 @@ customElements.define('pg222pb-greetme',
     }
 
     /**
-     * The attributes to listen for changes.
-     *
-     * @returns {string[]} - The attributes to monitor.
-     */
-    static get obserevedAttributes () {
-      return ['hidegreeting']
-    }
-
-    /**
-     *
-     * @param {string} name - The name of the attribute invoked
-     * @param {string} oldValue - The oldvalue of the attribute
-     * @param {string} newValue - The new value of the attribute
-     */
-    attributeChangedCallback (name, oldValue, newValue) {
-
-    }
-
-    /**
      * Handles the form submition by grabbing input name and grabbing MAL data.
      *
      * @param {Event} event - The event that triggered the listener.
@@ -159,7 +140,7 @@ customElements.define('pg222pb-greetme',
 
       this.shadowRoot.querySelector('.enteredname').append(name)
 
-      this.setAttribute('hidegreeting', 'false')
+      this.shadowRoot.querySelector('.greetingwrapper').setAttribute('hidden', 'false')
     }
   }
 )
