@@ -129,6 +129,25 @@ customElements.define('pg222pb-greetme',
     }
 
     /**
+     * The attributes to listen for changes.
+     *
+     * @returns {string[]} - The attributes to monitor.
+     */
+    static get obserevedAttributes () {
+      return ['hidegreeting']
+    }
+
+    /**
+     *
+     * @param {string} name - The name of the attribute invoked
+     * @param {string} oldValue - The oldvalue of the attribute
+     * @param {string} newValue - The new value of the attribute
+     */
+    attributeChangedCallback (name, oldValue, newValue) {
+
+    }
+
+    /**
      * Handles the form submition by grabbing input name and grabbing MAL data.
      *
      * @param {Event} event - The event that triggered the listener.
