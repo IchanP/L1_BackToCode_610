@@ -115,7 +115,8 @@ template.innerHTML = `
 customElements.define('pg222pb-greetme',
   /**
    * Class representing the greetme component.
-   * TODO ADD MORE
+   * Gets a name from the input field and then fetches random character data from MyAnimeList.
+   * Greets the user with a random character image.
    */
   class extends HTMLElement {
     /**
