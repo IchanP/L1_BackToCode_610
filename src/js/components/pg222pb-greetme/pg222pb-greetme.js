@@ -30,11 +30,12 @@ template.innerHTML = `
         .speech-bubble {
             background: #efefef;
             border-radius: 4px;
+            border-bottom-right-radius: 0px;
             font-size: 1.2rem;
             line-height: 1.3;
             padding: 15px;
             position: relative;
-            height: 50%;
+            height: 30%;
             width: 100%;
         }
         .speech-bubble-ds__arrow {
@@ -42,7 +43,7 @@ template.innerHTML = `
             border-top: 20px solid rgba(0, 0, 0, 0.2);
             bottom: -25px;
             position: absolute;
-            right: 6px;
+            right: 0px;
         }
         .speech-bubble-ds__arrow::before {
             border-left: 23px solid transparent;
@@ -50,7 +51,7 @@ template.innerHTML = `
             bottom: 2px;
             content: "";
             position: absolute;
-            right: 2px;
+            right: 0px;
         }
         .speech-bubble-ds__arrow::after {
             border-left: 21px solid transparent;
@@ -58,7 +59,7 @@ template.innerHTML = `
             bottom: 4px;
             content: "";
             position: absolute;
-            right: 2px;
+            right: 0px;
         }
         .greetme form {
             display: flex;
@@ -141,14 +142,16 @@ customElements.define('pg222pb-greetme',
     async #handleFormSubmit (event) {
       event.preventDefault()
 
-      // Grab input and display name for greeting
-      const name = this.shadowRoot.querySelector('input').value
-      this.shadowRoot.querySelector('.enteredname').replaceChildren(name)
-
-      // Fetch character data and add image src
       const characterData = await this.#fetchRandomCharacter()
       if (characterData) {
+        // Display the greeting elements and replace the name and image
         this.shadowRoot.querySelector('.greetingwrapper').setAttribute('hidden', 'false')
+        const name = this.shadowRoot.querySelector('input').value
+        this.shadowRoot.querySelector('.enteredname').replaceChildren(name)
+        this.shadowRoot.querySelector('.characterimage').setAttribute('src', characterData.data.images.jpg.image_url)
+
+        // Reset error message
+        this.shadowRoot.querySelector('.error').textContent = ''
       }
     }
 
@@ -159,9 +162,8 @@ customElements.define('pg222pb-greetme',
      */
     async #fetchRandomCharacter () {
       try {
-        const FETCH_URL = 'https://api.jikan.moe/v4/random/characterss'
+        const FETCH_URL = 'https://api.jikan.moe/v4/random/characters'
         const response = await fetch(FETCH_URL)
-        console.log(response.ok)
         if (response.ok) {
           const characterData = await response.json()
           return characterData
