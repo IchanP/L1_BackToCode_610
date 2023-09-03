@@ -1,8 +1,8 @@
 # L1 Back To Code
 
->Repository for Laboration 1 in 1DV610 Back to Coding
->
->This site uses [JIKAN](https://jikan.moe/) API to pull a random character from [MAL](https://myanimelist.net/) and display the image as a greeting.
+Repository for Laboration 1 in 1DV610 Back to Coding
+
+This site uses [JIKAN](https://jikan.moe/) API to pull a random character from [MAL](https://myanimelist.net/) and display the image as a greeting.
 
 ## Screen Shots
 
